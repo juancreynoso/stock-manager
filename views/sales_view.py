@@ -152,7 +152,7 @@ class SalesView:
             values = self.sales_tree.item(child)['values']
             if values[0] == product_data['id']:
                 # Producto ya existe, incrementar cantidad
-                current_quantity = int(values[3])
+                current_quantity = int(values[4])
                 new_quantity = current_quantity + quantity_to_add  # Usar quantity_to_add en lugar de 1
                 new_subtotal = product_data['price2'] * new_quantity
                 self.sales_tree.item(child, values=(
