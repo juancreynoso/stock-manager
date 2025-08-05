@@ -115,7 +115,8 @@ class SalesController:
                 return
             
             # Solicitar datos del cliente
-            client_data = self._get_client_data_for_budget()
+            extra_data = self._get_client_data_for_budget()
+            client_data = self.view.get_customer_data()
             if not client_data:
                 return  # Usuario canceló
             
@@ -146,8 +147,8 @@ class SalesController:
                 'client_phone': client_data.get('phone', ''),
                 'items': products,
                 'total': total,
-                'validity_days': client_data.get('validity_days', 30),
-                'notes': client_data.get('notes', '')
+                'validity_days': extra_data.get('validity_days', 1),
+                'notes': extra_data.get('notes', '')
             }
             
             # Generar presupuesto
@@ -165,6 +166,8 @@ class SalesController:
     def _get_client_data_for_budget(self):
         """Solicitar datos del cliente para el presupuesto"""
         try:
+            
+            '''
             # Datos básicos (obligatorios)
             client_name = simpledialog.askstring("Cliente", "Nombre del cliente:")
             if not client_name:
@@ -174,20 +177,24 @@ class SalesController:
             client_address = simpledialog.askstring("Cliente", "Dirección (opcional):") or ""
             client_phone = simpledialog.askstring("Cliente", "Teléfono (opcional):") or ""
             
+            '''
+            
             # Validez del presupuesto
-            validity_str = simpledialog.askstring("Presupuesto", "Validez en días (default: 30):") or "30"
+            validity_str = simpledialog.askstring("Presupuesto", "Validez en días (default: 1):") or "1"
             try:
                 validity_days = int(validity_str)
             except ValueError:
-                validity_days = 30
+                validity_days = 1
             
             # Notas adicionales
             notes = simpledialog.askstring("Presupuesto", "Observaciones (opcional):") or ""
             
             return {
-                'name': client_name,
-                'address': client_address,
-                'phone': client_phone,
+                '''
+                    'name': client_name,
+                    'address': client_address,
+                    'phone': client_phone,
+                '''
                 'validity_days': validity_days,
                 'notes': notes
             }
