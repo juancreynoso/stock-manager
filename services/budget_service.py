@@ -102,7 +102,7 @@ class BudgetService:
         elements.append(total_table)
         
         # Validez del presupuesto
-        validity_days = budget_data.get('validity_days', 30)
+        validity_days = budget_data.get('validity_days', 1)
         validity_text = f"<b>Validez del presupuesto:</b> {validity_days} días"
         validity = Paragraph(validity_text, self.styles['Normal'])
         elements.append(Spacer(1, 20))
@@ -138,6 +138,7 @@ class BudgetService:
         data = [
             ['Presupuesto N°:', budget_data['budget_number'], 'Fecha:', current_date],
             ['Cliente:', budget_data['client_name'], '', ''],
+            ['Documento:', budget_data['client_doc'], '', ''],
             ['Dirección:', budget_data.get('client_address', ''), '', ''],
             ['Teléfono:', budget_data.get('client_phone', ''), '', '']
         ]
