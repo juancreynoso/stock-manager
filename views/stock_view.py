@@ -193,8 +193,10 @@ class StockView:
         try:
             selected_item = self.stock_tree.selection()[0]
             values = self.stock_tree.item(selected_item)['values']
+            product_id = str(values[0]).zfill(4)
+            
             return {
-                'id': values[0],
+                'id': product_id,
                 'name': values[1],
                 'brand': values[2],
                 'price': float(values[3]),
