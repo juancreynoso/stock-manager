@@ -84,13 +84,13 @@ class SalesView:
 
         btnColor = "#FFFFFF"
 
-        delete_btn = tk.Button(manage_frame, text="QUITAR ARTICULO", width=10, borderwidth=3, 
+        delete_btn = tk.Button(manage_frame, text="QUITAR ARTICULO", width=12, borderwidth=3, 
                               bg=btnColor, fg='black', command=lambda: self.controller.delete_item() if self.controller else None)
-        clear_btn = tk.Button(manage_frame, text="BORRAR TODO", width=10, borderwidth=3, 
+        clear_btn = tk.Button(manage_frame, text="BORRAR TODO", width=12, borderwidth=3, 
                              bg=btnColor, fg='black', command=lambda: self.controller.clear_all() if self.controller else None)
-        budget_btn = tk.Button(manage_frame, text="PRESUPUESTO", width=10, borderwidth=3, 
+        budget_btn = tk.Button(manage_frame, text="PRESUPUESTO", width=12, borderwidth=3, 
                                bg=btnColor, fg='black', command=lambda: self.controller.generate_budget() if self.controller else None)
-        invoice_btn = tk.Button(manage_frame, text="FACTURA", width=10, borderwidth=3, 
+        invoice_btn = tk.Button(manage_frame, text="FACTURA", width=12, borderwidth=3, 
                                bg=btnColor, fg='black', command=lambda: self.controller.generate_invoice() if self.controller else None)
 
         delete_btn.grid(row=0, column=0, padx=5, pady=5)
