@@ -176,7 +176,7 @@ class BudgetService:
             data.append(row)
         
         # Crear tabla
-        table = Table(data, colWidths=[1*inch, 2.5*inch, 1.5*inch, 1*inch, 1*inch])
+        table = Table(data, colWidths=[0.6*inch, 2.9*inch, 1.5*inch, 1*inch, 1*inch])
         
         # Aplicar estilos
         table.setStyle(TableStyle([
