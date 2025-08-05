@@ -37,11 +37,12 @@ class StockController:
             }
 
             if form_data['iva'] == "21%":
-                product_data['price'] *= 1.21
+                product_data['price'] = round(product_data['price'] * 1.21, 2)
             else:
-                product_data['price'] *= 1.105
+                product_data['price'] = round(product_data['price'] * 1.105, 2)
             
-            # Guardar en base de datos
+            product_data['price2'] = round(product_data['price2'], 2)
+
             self.stock_model.add_product(product_data)
             
             # Refrescar tabla
@@ -50,12 +51,12 @@ class StockController:
             # Limpiar formulario
             self.view.clear_form()
             
-            self.view.show_success("Producto guardado correctamente")
+            self.view.show_success("Producto registrado correctamente")
             
         except ValueError as e:
             self.view.show_error(f"Error en los datos: {str(e)}")
         except Exception as e:
-            self.view.show_error(f"Error al guardar producto: {str(e)}")
+            self.view.show_error(f"Error al registar producto: {str(e)}")
     
     def update_product(self):
         """Actualizar producto existente"""
