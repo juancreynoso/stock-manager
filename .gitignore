@@ -24,6 +24,7 @@ presupuestos/
 # Certificados y claves
 /arca/my_private.key
 /arca/my_cert.crt
+/arca/my_request.csr
 
 # Archivos temporales
 /arca/TA.xml
