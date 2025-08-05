@@ -109,10 +109,10 @@ class SalesView:
     def get_customer_data(self):
         """Obtener datos del cliente del formulario"""
         return {
-            'nombre': self.customer_name_var.get().strip(),
-            'documento': self.customer_doc_var.get().strip(),
-            'direccion': self.customer_address_var.get().strip(),
-            'condicion_iva': self.customer_iva_var.get()
+            'name': self.customer_name_var.get().strip(),
+            'document': self.customer_doc_var.get().strip(),
+            'address': self.customer_address_var.get().strip(),
+            'iva': self.customer_iva_var.get()
         }
     
     def get_selected_products(self):
