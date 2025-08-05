@@ -180,7 +180,7 @@ class SalesController:
             '''
             
             # Validez del presupuesto
-            validity_str = simpledialog.askstring("Presupuesto", "Validez en días (default: 1):") or "1"
+            validity_str = simpledialog.askstring("Presupuesto", "Validez en días (por defecto: 1):") or "1"
             try:
                 validity_days = int(validity_str)
             except ValueError:
