@@ -30,6 +30,8 @@ class SalesController:
     
     def generate_invoice(self):
         """Generar factura completa"""
+        messagebox.showinfo("", "Función deshabilitada")
+        return
         try:
             # Obtener datos del cliente
             customer_data = self.view.get_customer_data()
