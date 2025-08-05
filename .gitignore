@@ -16,3 +16,16 @@ venv*/
 dist/
 build/
 *.spec
+
+# Archivos generados
+presupuestos/
+*.pdf
+
+# Certificados y claves
+/arca/my_private.key
+/arca/my_cert.crt
+
+# Archivos temporales
+/arca/TA.xml
+/arca/TRA.xml
+/arca/TRA.tmp
