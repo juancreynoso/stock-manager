@@ -15,12 +15,6 @@ Sistema de gestión de stock, ventas, generación de presupuestos en PDF y factu
 
 ---
 
-## 📸 Capturas
-
-*(Podés agregar capturas aquí con imágenes alojadas en el repo o enlaces externos)*
-
----
-
 ## 🛠️ Tecnologías utilizadas
 
 - Python 3.10+
