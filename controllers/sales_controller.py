@@ -114,12 +114,19 @@ class SalesController:
                 messagebox.showwarning("Advertencia", "No hay productos para generar el presupuesto")
                 return
             
-            # Solicitar datos del cliente
-            extra_data = self._get_client_data_for_budget()
+            # Recuperar datos del cliente del formulario
             client_data = self.view.get_customer_data()
-            if not client_data:
-                return  # Usuario canceló
             
+            if not client_data['name']:
+                messagebox.showwarning("Advertencia", "Debe ingresar el nombre del cliente")
+                return
+
+            if not client_data:
+                messagebox.showwarning("Advertencia", "No hay datos del cliente")
+                return
+            
+            extra_data = self._get_client_data_for_budget()
+
             # Recopilar productos del tree
             products = []
             total = 0
@@ -138,12 +145,14 @@ class SalesController:
             
             # Generar número de presupuesto
             budget_number = self._generate_budget_number()
+
             
             # Preparar datos del presupuesto
             budget_data = {
                 'budget_number': budget_number,
                 'client_name': client_data['name'],
                 'client_address': client_data.get('address', ''),
+                'client_doc': client_data.get('document', ''),
                 'client_phone': client_data.get('phone', ''),
                 'items': products,
                 'total': total,
