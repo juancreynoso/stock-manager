@@ -186,7 +186,10 @@ class StockView:
     def clear_form(self):
         """Limpiar formulario"""
         for var in self.form_vars:
-            var.set('')
+            if var == self.iva_var:
+                var.set('21%')
+            else:
+                var.set('')
 
     def get_selected_product(self):
         """Obtener producto seleccionado del tree"""
