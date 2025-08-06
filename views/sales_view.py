@@ -150,7 +150,7 @@ class SalesView:
         # Verificar si el producto ya existe
         for child in self.sales_tree.get_children():
             values = self.sales_tree.item(child)['values']
-            if values[0] == product_data['id']:
+            if str(values[0]) == str(product_data['id']):
                 # Producto ya existe, incrementar cantidad
                 current_quantity = int(values[4])
                 new_quantity = current_quantity + quantity_to_add  # Usar quantity_to_add en lugar de 1
