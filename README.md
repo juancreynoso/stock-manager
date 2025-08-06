@@ -74,10 +74,8 @@ You’ll need the following:
 You can generate an `.exe` file using PyInstaller:
 
 ```bash
-pyinstaller --noconsole --onefile main.py
+pyinstaller --noconfirm --onefile --windowed --add-data "db/stock.db;db" main.py
 ```
-
-To prevent the database from being deleted, make sure it is located outside the generated bundle.
 
 ---
 
