@@ -49,7 +49,7 @@ class StockView:
         manage_frame = tk.LabelFrame(self.frame, text='Opción', borderwidth=5)
         manage_frame.grid(row=0, column=0, sticky='w', padx=[10,20], pady=20, ipadx=[6])
 
-        btnColor = "#40C395"
+        btnColor = "#083F79"
 
         save_btn = tk.Button(manage_frame, text="GUARDAR", width=10, borderwidth=3, bg=btnColor, fg='black', 
                             command=lambda: self.controller.save_product())
