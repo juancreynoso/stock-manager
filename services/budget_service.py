@@ -124,10 +124,10 @@ class BudgetService:
         """Información de la empresa - personalizable"""
         company_text = """
         <b>NESTOR PALACIOS ELECTRICIDAD E ILUMINACIÓN</b><br/>
-        Dirección: Martín Gil 134<br/>
+        Dirección: Martín Gil 142<br/>
         Teléfono: +54 9 3584 37-2313<br/>
-        Email: nestorpalacios@gmail.com<br/>
-        CUIT: 20-12345678-9
+        Email: nestorpalacios032017@gmail.com<br/>
+        CUIT: 20-25582386-9
         """
         return Paragraph(company_text, self.styles['CompanyInfo'])
     
