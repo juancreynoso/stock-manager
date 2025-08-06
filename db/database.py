@@ -43,7 +43,8 @@ class Database:
                     brand TEXT NOT NULL,
                     price REAL NOT NULL,
                     price2 REAL NOT NULL,
-                    quantity INTEGER NOT NULL
+                    quantity INTEGER NOT NULL,
+                    created_at TEXT DEFAULT CURRENT_DATE
                 )
             ''')
             
