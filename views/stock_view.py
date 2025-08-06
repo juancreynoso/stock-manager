@@ -49,7 +49,7 @@ class StockView:
         manage_frame = tk.LabelFrame(self.frame, text='Opción', borderwidth=5)
         manage_frame.grid(row=0, column=0, sticky='w', padx=[10,20], pady=20, ipadx=[6])
 
-        btnColor = "#083F79"
+        btnColor = "#FFFFFF"
 
         save_btn = tk.Button(manage_frame, text="GUARDAR", width=10, borderwidth=3, bg=btnColor, fg='black', 
                             command=lambda: self.controller.save_product())
@@ -84,7 +84,7 @@ class StockView:
         entries_frame.grid(row=1, column=0, sticky='w', padx=[10,200], pady=[0,20], ipadx=[6])
 
         # Botón generar ID
-        generate_id_btn = tk.Button(entries_frame, text="GENERAR ID", borderwidth=3, bg="#40C395", fg='black', 
+        generate_id_btn = tk.Button(entries_frame, text="GENERAR ID", borderwidth=3, bg="#FFFFFF", fg='black', 
                                    command=self.generate_random_id)
         generate_id_btn.grid(row=0, column=3, padx=5, pady=5)
 
