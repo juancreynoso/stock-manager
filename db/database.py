@@ -1,11 +1,26 @@
 import sqlite3
 import os
+import sys
 
 class Database:
-    def __init__(self, db_path="db/stock.db"):
+    def __init__(self, db_path=None):
+        if db_path is None:
+            base_dir = self.get_writable_data_dir()
+            db_path = os.path.join(base_dir, 'stock.db')
+
         self.db_path = db_path
         self.ensure_db_exists()
         self.create_tables()
+
+    def get_writable_data_dir(self):
+        """Obtener una ruta donde se pueda escribir, según plataforma"""
+        if getattr(sys, 'frozen', False):  # Si está empaquetado con PyInstaller
+            base_dir = os.path.join(os.environ['LOCALAPPDATA'], 'StockManager', 'db')
+        else:
+            # En desarrollo: usar carpeta local db/
+            base_dir = os.path.join(os.path.dirname(__file__))
+        os.makedirs(base_dir, exist_ok=True)
+        return base_dir
     
     def ensure_db_exists(self):
         """Asegurar que el directorio de la base de datos existe"""
