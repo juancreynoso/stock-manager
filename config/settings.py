@@ -12,8 +12,8 @@ DATABASE_CONFIG = {
 # Configuración de la empresa
 COMPANY_CONFIG = {
     'razon_social': 'ELECTRICIDAD NESTOR PALACIOS',
-    'cuit': '20-44551555-9',
-    'direccion': 'Ricardo Araujo 363',
+    'cuit': '20-25582386-9',
+    'direccion': 'Martin Gil 142',
     'localidad': 'Carnerillo',
     'provincia': 'Córdoba',
     'punto_venta': 1,
