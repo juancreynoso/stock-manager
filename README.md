@@ -1,41 +1,41 @@
-# 📦 Stock Management System
+# Stock Management System
 
-Sistema de gestión de stock, ventas, generación de presupuestos en PDF y facturación integrada con AFIP. Desarrollado en Python con interfaz gráfica Tkinter.
-
----
-
-## 🖥️ Características
-
-- Gestión de productos (stock, marcas, categorías)
-- Panel de ventas con cálculo automático de subtotal y total
-- Generación de presupuestos en PDF
-- Facturación electrónica (AFIP) en entorno de homologación
-- Base de datos SQLite persistente
-- Interfaz gráfica amigable y organizada con pestañas
+Stock management, sales, PDF quote generation, and invoicing system integrated with AFIP. Developed in Python with a Tkinter graphical interface.
 
 ---
 
-## 🛠️ Tecnologías utilizadas
+## Features
+
+- Product management (stock, brands, categories)
+- Sales panel with automatic subtotal and total calculation
+- PDF quote generation
+- Electronic invoicing (AFIP) in test environment (homologation)
+- Persistent SQLite database
+- User-friendly graphical interface organized with tabs
+
+---
+
+## Technologies
 
 - Python 3.10+
 - Tkinter (GUI)
-- SQLite3 (Base de datos local)
+- SQLite3 (local database)
 - ReportLab (PDFs)
-- Zeep (para integración SOAP con AFIP)
-- PyInstaller (para generar ejecutables)
+- Zeep (for SOAP integration with AFIP)
+- PyInstaller (to generate executables)
 
 ---
 
-## ⚙️ Instalación
+## Installation
 
-### 1. Cloná el repositorio
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/tuusuario/stock-management-system.git
-cd stock-management-system
+git clone https://github.com/juancreynoso/stock-manager.git
+cd stock-manager
 ```
 
-### 2. Creá y activá un entorno virtual (opcional pero recomendado)
+### 2. Create and activate a virtual enviroment (recommended)
 
 ```bash
 python3 -m venv venv
@@ -43,13 +43,13 @@ source venv/bin/activate  # Linux/macOS
 venv\Scripts\activate     # Windows
 ```
 
-### 3. Instalá las dependencias
+### 3. Install dependences
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Ejecutá la aplicación
+### 4. Run the application
 
 ```bash
 python main.py
@@ -57,52 +57,30 @@ python main.py
 
 ---
 
-## 📄 Facturación con AFIP
+## Invoicing with AFIP
 
-El sistema permite generar comprobantes en entorno de prueba (homologación) usando el WS de AFIP.  
-Para esto se requiere:
+You’ll need the following:
+- Digital certificate associated with your CUIT
+- TA (access ticket)
+- Fiscal key with necessary services enabled
+- Files `test_private.key`, `test_request.csr`, `test.crt`, `TA.xml`, etc.
 
-- Certificado digital asociado a CUIT
-- TA (ticket de acceso)
-- Clave fiscal con servicios habilitados
-- Archivos `test_private.key`, `test_request.csr`, `test.crt`, `TA.xml`, etc.
-
-**Importante:** Los archivos confidenciales no están incluidos en el repositorio. Se deben generar manualmente y ubicar en la carpeta `certs/`.
+**Important:** Confidential files are not included in the repository. You must generate them manually and place them in the `certs/` folder.
 
 ---
 
-## 🧪 Compilar ejecutable (Windows)
+## Build excecutable (Windows)
 
-Podés generar un `.exe` con PyInstaller:
+You can generate an `.exe` file using PyInstaller:
 
 ```bash
 pyinstaller --noconsole --onefile main.py
 ```
 
-Para evitar que la base de datos se borre, asegurate de ubicarla en una ruta fuera del bundle generado.
+To prevent the database from being deleted, make sure it is located outside the generated bundle.
 
 ---
 
-## 🔐 .gitignore recomendado
-
-```gitignore
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.spec
-dist/
-build/
-venv/
-certs/*.key
-certs/*.csr
-certs/*.crt
-certs/TA.xml
-presupuestos/
-```
-
----
-
-## 👨‍💻 Autor
+## Autor
 
 Juan Cruz Reynoso
