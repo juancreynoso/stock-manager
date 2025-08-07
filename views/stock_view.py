@@ -103,8 +103,8 @@ class StockView:
         tk.Label(entries_frame, text='IVA', anchor='e', width=2).grid(row=3, column=4)
 
         # Label para mostrar costo + IVA
-        tk.Label(entries_frame, text="COSTO + IVA:", fg='white', font=('Arial', 12, 'bold')).grid(row=4, column=3, sticky='e', padx=5)
-        self.iva_label = tk.Label(entries_frame, textvariable=self.iva_included_var, fg='white', font=('Arial', 12, 'bold'))
+        tk.Label(entries_frame, text="COSTO + IVA:", fg='black').grid(row=4, column=3, sticky='e', padx=5)
+        self.iva_label = tk.Label(entries_frame, textvariable=self.iva_included_var, fg='black')
         self.iva_label.grid(row=4, column=4, sticky='w', padx=5)
 
         # Entries
