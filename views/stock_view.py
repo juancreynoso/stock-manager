@@ -1,11 +1,13 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import random
+from models import StockModel
 
 class StockView:
     def __init__(self, parent, controller=None):
         self.controller = controller
         self.frame = tk.Frame(parent, bg="#076397")
+        self.stock_model = StockModel()
         self.setup_variables()
         self.create_widgets()
         
@@ -201,6 +203,8 @@ class StockView:
                 var.set('')
         # Resetear la preview del IVA
         self.iva_included_var.set('-')
+        products = self.stock_model.get_all_products()
+        self.refresh_stock_table(products)
 
     def get_selected_product(self):
         """Obtener producto seleccionado del tree"""

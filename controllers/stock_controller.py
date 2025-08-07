@@ -38,8 +38,10 @@ class StockController:
 
             if form_data['iva'] == "21%":
                 product_data['price'] = round(product_data['price'] * 1.21, 2)
-            else:
+            elif form_data['iva'] == "10.5%":
                 product_data['price'] = round(product_data['price'] * 1.105, 2)
+            else:
+                product_data['price'] = round(product_data['price'], 2)
             
             product_data['price2'] = round(product_data['price2'], 2)
 
@@ -160,12 +162,17 @@ class StockController:
                 self.view.show_warning("Ingrese ID o nombre para buscar")
                 return
             
-            # Buscar en base de datos
-            results = self.stock_model.search_products(item_id or name)
+            search_term = item_id or name
+            results = self.stock_model.search_products(search_term)
             
             if results:
-                # Cargar primer resultado en formulario
                 self.view.set_form_data(results[0])
+                self.view.refresh_stock_table(results)
+            
+                if len(results) == 1:
+                    self.view.show_success("Se encontró 1 producto")
+                else:
+                    self.view.show_success(f"Se encontraron {len(results)} productos. El más relevante se cargó en el formulario.")
             else:
                 self.view.show_warning("No se encontraron productos")
                 
@@ -175,10 +182,8 @@ class StockController:
     def add_to_sales(self):
         """Agregar producto seleccionado a las ventas"""
         try:
-            # Obtener la cantidad del Entry usando self.view en lugar de self.stock_view
             quantity_str = self.view.qnt_to_add.get()
             
-            # Validar que sea un número válido
             if not quantity_str or quantity_str.strip() == "":
                 quantity_to_add = 1  # Valor por defecto si está vacío
             else:
@@ -195,12 +200,13 @@ class StockController:
 
                 messagebox.showinfo("", f"Se han agregado {quantity_to_add} unidades del articulo {product_data['name']}")
                 
-                # Opcional: resetear el Entry después de agregar
                 self.view.qnt_to_add.set("1")
+                products = self.stock_model.get_all_products()
+                self.view.refresh_stock_table(products)
             else:
                 # Manejar caso donde no hay producto seleccionado
                 messagebox.showwarning("Advertencia", "Por favor seleccione un producto")
-                
+
         except ValueError as e:
             messagebox.showerror("Error", f"Cantidad inválida: {str(e)}")
         except Exception as e:
