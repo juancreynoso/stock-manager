@@ -16,25 +16,25 @@ class BudgetService:
         self.styles.add(ParagraphStyle(
             name='CustomTitle',
             parent=self.styles['Heading1'],
-            fontSize=16,  # Reducido de 18
-            spaceAfter=15,  # Reducido de 30
-            alignment=1,  # Centrado
+            fontSize=16,
+            spaceAfter=15,
+            alignment=1,
             textColor=colors.darkblue
         ))
         
         self.styles.add(ParagraphStyle(
             name='CompanyInfo',
             parent=self.styles['Normal'],
-            fontSize=9,  # Reducido de 10
-            alignment=1,  # Centrado
-            spaceAfter=10  # Reducido de 20
+            fontSize=9,  
+            alignment=1, 
+            spaceAfter=10 
         ))
         
         self.styles.add(ParagraphStyle(
             name='ClientInfo',
             parent=self.styles['Normal'],
-            fontSize=9,  # Reducido de 10
-            spaceAfter=5  # Reducido de 10
+            fontSize=9,
+            spaceAfter=5
         ))
     
     def generate_budget(self, budget_data, save_path=None):
@@ -65,13 +65,11 @@ class BudgetService:
         """
         if not save_path:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"presupuesto_{budget_data['budget_number']}_{timestamp}.pdf"
+            filename = f"{budget_data['budget_number']}_{timestamp}.pdf"
             save_path = os.path.join("presupuestos", filename)
             
-            # Crear directorio si no existe
             os.makedirs("presupuestos", exist_ok=True)
         
-        # Crear documento con márgenes reducidos
         doc = SimpleDocTemplate(
             save_path, 
             pagesize=A4,
@@ -127,7 +125,7 @@ class BudgetService:
         
         # Información en formato más limpio y legible
         data = [
-            ['Presupuesto N°:', budget_data['budget_number'], '', 'Fecha:', current_date],
+            ['Presupuesto:', budget_data['budget_name'], '', 'Fecha:', current_date],
             ['', '', '', '', ''],  # Fila vacía como separador
             ['Cliente:', budget_data['client_name'], '', '', ''],
             ['Documento:', budget_data['client_doc'], '', '', ''],
@@ -181,23 +179,23 @@ class BudgetService:
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 9),  # Reducido
+            ('FONTSIZE', (0, 0), (-1, 0), 9),
             
             # Contenido
             ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 8),  # Reducido de 9
+            ('FONTSIZE', (0, 1), (-1, -1), 8),
             ('ALIGN', (1, 1), (1, -1), 'LEFT'),
             ('ALIGN', (3, 1), (-1, -1), 'RIGHT'),
             
             # Bordes
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),  # Bordes más finos
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             
             # Padding reducido
-            ('LEFTPADDING', (0, 0), (-1, -1), 3),  # Reducido
-            ('RIGHTPADDING', (0, 0), (-1, -1), 3),  # Reducido
-            ('TOPPADDING', (0, 0), (-1, -1), 3),  # Reducido
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 3),  # Reducido
+            ('LEFTPADDING', (0, 0), (-1, -1), 3),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 3),
+            ('TOPPADDING', (0, 0), (-1, -1), 3),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
         ]))
         
         return table
@@ -209,36 +207,45 @@ class BudgetService:
         table = Table(data, colWidths=[5.5*inch, 1.2*inch])
         table.setStyle(TableStyle([
             ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 11),  # Reducido de 12
+            ('FONTSIZE', (0, 0), (-1, -1), 11),
             ('ALIGN', (0, 0), (0, 0), 'RIGHT'),
             ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
             ('BACKGROUND', (0, 0), (-1, -1), colors.lightgrey),
-            ('BOX', (0, 0), (-1, -1), 1.5, colors.black),  # Borde más fino
-            ('LEFTPADDING', (0, 0), (-1, -1), 4),  # Reducido
-            ('RIGHTPADDING', (0, 0), (-1, -1), 4),  # Reducido
-            ('TOPPADDING', (0, 0), (-1, -1), 4),  # Reducido
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),  # Reducido
+            ('BOX', (0, 0), (-1, -1), 1.5, colors.black),
+            ('LEFTPADDING', (0, 0), (-1, -1), 4),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+            ('TOPPADDING', (0, 0), (-1, -1), 4), 
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
         ]))
         
         return table
     
     def _create_footer_info(self, validity_days, notes):
         """Crear información del pie de página compacta"""
-        validity_text = Paragraph(f"<b>Validez del presupuesto:</b> {validity_days} días")
+        # Crear estilo para el pie de página
+        footer_style = ParagraphStyle(
+            'FooterStyle',
+            parent=self.styles['Normal'],
+            fontSize=9,
+            leftIndent=0,
+            rightIndent=0
+        )
+        
+        validity_text = Paragraph(f"<b>Validez del presupuesto:</b> {validity_days} días", footer_style)
         
         if notes:
-            # Si hay notas, crear una tabla de dos columnas
-            data = [[validity_text, Paragraph(f"<b>Observaciones:</b> {notes}")]]
-            table = Table(data, colWidths=[2*inch, 4.7*inch])
+            # Si hay notas, crear tabla con 3 columnas: texto1, espaciador, texto2
+            notes_text = Paragraph(f"<b>Observaciones:</b> {notes}", footer_style)
+            data = [[validity_text, "", notes_text]]  # Columna vacía como espaciador
+            table = Table(data, colWidths=[2.2*inch, 0.8*inch, 3.7*inch])  # Espaciador de 0.8 pulgadas
         else:
             # Si no hay notas, solo mostrar validez
             data = [[validity_text]]
             table = Table(data, colWidths=[6.7*inch])
         
         table.setStyle(TableStyle([
-            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 0), (-1, -1), 8),  # Tamaño pequeño
             ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+            ('ALIGN', (2, 0), (2, 0), 'LEFT'),  # Alineación para la tercera columna
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
             ('LEFTPADDING', (0, 0), (-1, -1), 0),
             ('RIGHTPADDING', (0, 0), (-1, -1), 0),

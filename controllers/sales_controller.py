@@ -145,13 +145,11 @@ class SalesController:
                 products.append(product)
                 total += product['subtotal']
             
-            # Generar número de presupuesto
             budget_number = self._generate_budget_number()
 
-            
-            # Preparar datos del presupuesto
             budget_data = {
                 'budget_number': budget_number,
+                'budget_name': extra_data.get('budget_name', ''),
                 'client_name': client_data['name'],
                 'client_address': client_data.get('address', ''),
                 'client_doc': client_data.get('document', ''),
@@ -165,10 +163,8 @@ class SalesController:
             # Generar presupuesto
             pdf_path = self.budget_service.generate_budget(budget_data)
             
-            # Mostrar mensaje de éxito
             messagebox.showinfo("Éxito", f"Presupuesto generado correctamente:\n{pdf_path}")
             
-            # Opcional: abrir el PDF automáticamente
             self._open_pdf(pdf_path)
             
         except Exception as e:
@@ -189,7 +185,9 @@ class SalesController:
             client_phone = simpledialog.askstring("Cliente", "Teléfono (opcional):") or ""
             
             '''
-            
+            # Nombre del presupuesto
+            budget_name = simpledialog.askstring("Presupuesto", "Nombre del presupuesto") or f"{self._generate_budget_number()}"
+
             # Validez del presupuesto
             validity_str = simpledialog.askstring("Presupuesto", "Validez en días (por defecto: 1):") or "1"
             try:
@@ -200,15 +198,12 @@ class SalesController:
             # Notas adicionales
             notes = simpledialog.askstring("Presupuesto", "Observaciones (opcional):") or ""
             
-            return {
-                '''
-                    'name': client_name,
-                    'address': client_address,
-                    'phone': client_phone,
-                '''
+            result = {
+                'budget_name': budget_name,
                 'validity_days': validity_days,
                 'notes': notes
             }
+            return result
             
         except Exception as e:
             messagebox.showerror("Error", f"Error al obtener datos del cliente: {str(e)}")
