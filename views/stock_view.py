@@ -43,6 +43,9 @@ class StockView:
             self.quantity_var,
             self.iva_var,
         ]
+
+        self.sort_column = None
+        self.sort_reverse = False
     
     def create_widgets(self):
         """Crear todos los widgets de la vista"""
@@ -152,12 +155,18 @@ class StockView:
         self.stock_tree.column("Price2", anchor=tk.W, width=100, stretch=False)
         self.stock_tree.column("Quantity", anchor=tk.W, width=60, stretch=False)
 
-        self.stock_tree.heading('Item Id', text='Código', anchor=tk.W)
-        self.stock_tree.heading('Name', text='Descripción', anchor=tk.W)
-        self.stock_tree.heading('Brand', text='Marca', anchor=tk.W)
-        self.stock_tree.heading('Price', text='Precio Costo', anchor=tk.W)
-        self.stock_tree.heading('Price2', text='Precio Venta', anchor=tk.W)
-        self.stock_tree.heading('Quantity', text='Cantidad', anchor=tk.W)
+        self.stock_tree.heading('Item Id', text='Código ↕', anchor=tk.W, 
+                           command=lambda: self.sort_tree('Item Id'))
+        self.stock_tree.heading('Name', text='Descripción ↕', anchor=tk.W,
+                            command=lambda: self.sort_tree('Name'))
+        self.stock_tree.heading('Brand', text='Marca ↕', anchor=tk.W,
+                            command=lambda: self.sort_tree('Brand'))
+        self.stock_tree.heading('Price', text='Precio Costo ↕', anchor=tk.W,
+                            command=lambda: self.sort_tree('Price'))
+        self.stock_tree.heading('Price2', text='Precio Venta ↕', anchor=tk.W,
+                            command=lambda: self.sort_tree('Price2'))
+        self.stock_tree.heading('Quantity', text='Cantidad ↕', anchor=tk.W,
+                            command=lambda: self.sort_tree('Quantity'))
         
 
         self.stock_tree.tag_configure('orow', background="#FFFFFF")
@@ -226,16 +235,17 @@ class StockView:
 
     def refresh_stock_table(self, products):
         """Refrescar tabla de stock con nuevos datos"""
-        # Limpiar tabla actual
         for item in self.stock_tree.get_children():
             self.stock_tree.delete(item)
         
-        # Agregar productos
         for product in products:
             self.stock_tree.insert(parent='', index='end', iid=product[0], text="", 
                                   values=product, tag="orow")
         
         self.stock_tree.tag_configure('orow', background="white", foreground='black')
+
+        if self.sort_column:
+            self.sort_tree(self.sort_column)
 
     def update_price_preview(self, *args):
         """Actualizar preview del costo + IVA"""
@@ -259,10 +269,8 @@ class StockView:
             else:
                 iva_multiplier = 1.21  # Default a 21%
             
-            # Calcular costo con IVA
             cost_with_iva = round(cost * iva_multiplier, 2)
             
-            # Mostrar resultado
             self.iva_included_var.set(f"${cost_with_iva:.2f}")
             
         except (ValueError, AttributeError) as e:
@@ -284,3 +292,72 @@ class StockView:
     def ask_confirmation(self, message):
         """Preguntar confirmación al usuario"""
         return messagebox.askquestion("Confirmación", message) == 'yes'
+    
+
+    def sort_tree(self, column):
+        """Ordenar tree por columna especificada"""
+        try:
+            data = []
+            for child in self.stock_tree.get_children():
+                values = self.stock_tree.item(child)['values']
+                data.append((child, values))
+            
+            if self.sort_column == column:
+                self.sort_reverse = not self.sort_reverse
+            else:
+                self.sort_reverse = False
+                self.sort_column = column
+            
+            column_index = self.stock_tree['columns'].index(column)
+            
+            def sort_key(item):
+                value = item[1][column_index]
+                
+                if column in ['Price', 'Price2', 'Quantity']:
+                    try:
+                        return float(value)
+                    except (ValueError, TypeError):
+                        return 0
+                
+                elif column == 'Item Id':
+                    try:
+                        return int(value)
+                    except (ValueError, TypeError):
+                        return str(value).lower()
+                
+                else:
+                    return str(value).lower()
+            
+            data.sort(key=sort_key, reverse=self.sort_reverse)
+            
+            for index, (child, values) in enumerate(data):
+                self.stock_tree.move(child, '', index)
+            
+            self.update_sort_indicators(column)
+            
+        except Exception as e:
+            print(f"Error al ordenar: {e}")
+
+
+    def update_sort_indicators(self, sorted_column):
+        """Actualizar indicadores de ordenamiento en headers"""
+        
+        column_texts = {
+            'Item Id': 'Código',
+            'Name': 'Descripción', 
+            'Brand': 'Marca',
+            'Price': 'Precio Costo',
+            'Price2': 'Precio Venta',
+            'Quantity': 'Cantidad'
+        }
+        
+        for col in self.stock_tree['columns']:
+            base_text = column_texts[col]
+            
+            if col == sorted_column:
+                indicator = ' ↑' if not self.sort_reverse else ' ↓'
+                text = base_text + indicator
+            else:
+                text = base_text + ' ↕'
+            
+            self.stock_tree.heading(col, text=text)
