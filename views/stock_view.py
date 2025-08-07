@@ -25,6 +25,11 @@ class StockView:
         self.quantity_var = tk.StringVar()
         self.iva_var = tk.StringVar(value="21%")
         self.qnt_to_add = tk.StringVar(value=1)
+        self.iva_included_var = tk.StringVar(value="-")
+        
+        # Configurar traces DESPUÉS de crear las variables
+        self.price_var.trace_add("write", self.update_price_preview)
+        self.iva_var.trace_add("write", self.update_price_preview)
         
         # Lista de variables para fácil acceso
         self.form_vars = [
@@ -35,7 +40,6 @@ class StockView:
             self.price2_var,
             self.quantity_var,
             self.iva_var,
-           
         ]
     
     def create_widgets(self):
@@ -98,8 +102,12 @@ class StockView:
 
         tk.Label(entries_frame, text='IVA', anchor='e', width=2).grid(row=3, column=4)
 
-        # Entries
+        # Label para mostrar costo + IVA
+        tk.Label(entries_frame, text="COSTO + IVA:", fg='white', font=('Arial', 12, 'bold')).grid(row=4, column=3, sticky='e', padx=5)
+        self.iva_label = tk.Label(entries_frame, textvariable=self.iva_included_var, fg='white', font=('Arial', 12, 'bold'))
+        self.iva_label.grid(row=4, column=4, sticky='w', padx=5)
 
+        # Entries
         self.item_id_entry = tk.Entry(entries_frame, width=50, textvariable=self.item_id_var)
         self.name_entry = tk.Entry(entries_frame, width=50, textvariable=self.name_var)
         self.brand_entry = tk.Entry(entries_frame, width=50, textvariable=self.brand_var)
@@ -107,9 +115,10 @@ class StockView:
         self.price2_entry = tk.Entry(entries_frame, width=50, textvariable=self.price2_var)
         self.quantity_entry = tk.Entry(entries_frame, width=50, textvariable=self.quantity_var)
 
-        iva = ['21%', '10.5%']
-        self.iva_combo = ttk.Combobox(entries_frame, width=5, textvariable=self.iva_var, values=iva)
-        self.iva_combo.grid(row=3, column=3)
+        # Combobox para IVA
+        iva = ['21%', '10.5%', '0%']
+        self.iva_combo = ttk.Combobox(entries_frame, width=5, textvariable=self.iva_var, values=iva, state='readonly')
+        self.iva_combo.grid(row=3, column=3, padx=5)
 
         # Grid layout para entries
         self.item_id_entry.grid(row=0, column=2, padx=5, pady=5)
@@ -190,6 +199,8 @@ class StockView:
                 var.set('21%')
             else:
                 var.set('')
+        # Resetear la preview del IVA
+        self.iva_included_var.set('-')
 
     def get_selected_product(self):
         """Obtener producto seleccionado del tree"""
@@ -222,6 +233,38 @@ class StockView:
         
         self.stock_tree.tag_configure('orow', background="white", foreground='black')
 
+    def update_price_preview(self, *args):
+        """Actualizar preview del costo + IVA"""
+        try:
+            # Obtener precio costo
+            cost_str = self.price_var.get().strip()
+            if not cost_str:
+                self.iva_included_var.set("-")
+                return
+            
+            cost = float(cost_str)
+            
+            # Obtener porcentaje de IVA
+            iva_str = self.iva_var.get().strip()
+            if iva_str == "21%":
+                iva_multiplier = 1.21
+            elif iva_str == "10.5%":
+                iva_multiplier = 1.105
+            elif iva_str == "0%":
+                iva_multiplier = 1.0
+            else:
+                iva_multiplier = 1.21  # Default a 21%
+            
+            # Calcular costo con IVA
+            cost_with_iva = round(cost * iva_multiplier, 2)
+            
+            # Mostrar resultado
+            self.iva_included_var.set(f"${cost_with_iva:.2f}")
+            
+        except (ValueError, AttributeError) as e:
+            self.iva_included_var.set("-")
+            print(f"Error calculando IVA: {e}")
+
     def show_success(self, message):
         """Mostrar mensaje de éxito"""
         messagebox.showinfo("Éxito", message)
@@ -237,4 +280,3 @@ class StockView:
     def ask_confirmation(self, message):
         """Preguntar confirmación al usuario"""
         return messagebox.askquestion("Confirmación", message) == 'yes'
-    
