@@ -199,7 +199,7 @@ class StockView:
             self.item_id_var.set(data[0])
             self.name_var.set(data[1])
             self.brand_var.set(data[2])
-            self.price_var.set(data[3])
+            self.price_var.set(round(float(data[3]) / 1.21, 2))
             self.price2_var.set(data[4])
             self.quantity_var.set(data[5])
 
